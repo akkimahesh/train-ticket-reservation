@@ -28,6 +28,6 @@ jobs:
       - name: Build, Test and SonarQube Scan
         run: |
           mvn clean verify sonar:sonar \
-            -Dsonar.projectKey=Train-Book \
+            -Dsonar.projectKey=Train-Book-resevation \
             -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
             -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
