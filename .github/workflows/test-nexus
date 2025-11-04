@@ -1,0 +1,31 @@
+name: Test Nexus Authentication
+
+on:
+  workflow_dispatch:  # Manual trigger for testing
+
+jobs:
+  test-auth:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test Nexus Authentication
+        env:
+          NEXUS_SERVER_URL: ${{ secrets.NEXUS_SERVER_URL }}
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        run: |
+          echo "Testing authentication to Nexus at $NEXUS_SERVER_URL"
+          RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -u "$NEXUS_USERNAME:$NEXUS_PASSWORD" \
+            --head \
+            "$NEXUS_SERVER_URL")
+
+          echo "HTTP response code: $RESPONSE_CODE"
+
+          if [[ "$RESPONSE_CODE" -eq 200 ]]; then
+            echo "Authentication successful."
+            exit 0
+          else
+            echo "Authentication failed."
+            exit 1
+          fi
