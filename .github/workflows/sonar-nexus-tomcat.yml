@@ -76,9 +76,9 @@ jobs:
           NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
           NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
         run: |
-          echo "Uploading WAR to Nexus..."
-          curl -v -u "$NEXUS_USERNAME:$NEXUS_PASSWORD" \
-          --upload-file ./target/TrainBook-1.0.0-SNAPSHOT.war "${NEXUS_SERVER_URL}/repository/train-ticket/"
+         echo "Uploading WAR to Nexus..."
+         curl -v -u "$NEXUS_USERNAME:$NEXUS_PASSWORD" \
+         --upload-file ./target/TrainBook-1.0.0-SNAPSHOT.war "${NEXUS_SERVER_URL}"/repository/train-ticket/
 
   deploy-to-tomcat:
     needs: upload-to-nexus
