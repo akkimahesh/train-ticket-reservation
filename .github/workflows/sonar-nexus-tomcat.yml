@@ -64,9 +64,13 @@ jobs:
          --upload-file ./target/TrainBook-1.0.0-SNAPSHOT.war "${NEXUS_SERVER_URL}"/repository/train-ticket/
 
       - name: Download WAR from Nexus
+        env:
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+          NEXUS_DOWNLOAD: ${{ secrets.NEXUS_DOWNLOAD }}  # full URL to the WAR file in Nexus
         run: |
-          echo "Downloading artifact from Nexus..."
-          wget "${NEXUS_DOWNLOAD}"
+         echo "Downloading artifact from Nexus..."
+         wget --user="$NEXUS_USERNAME" --password="$NEXUS_PASSWORD" "$NEXUS_DOWNLOAD"
 
       - name: Deploy to Tomcat
         run: |
