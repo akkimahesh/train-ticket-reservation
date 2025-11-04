@@ -32,15 +32,26 @@ jobs:
             -Dsonar.host.url="${{ secrets.SONAR_HOST_URL }}" \
             -Dsonar.login="${{ secrets.SONAR_TOKEN }}"
 
-      - name: Publish to Nexus
-        uses: sonatype-nexus-community/nexus-repo-github-action@master
-        with:
-         serverUrl: ${{ secrets.NEXUS_SERVER_URL }}
-         username: ${{ secrets.NEXUS_USERNAME }}
-         password: ${{ secrets.NEXUS_PASSWORD }}
-         format: raw
-         repository: train-ticket
-         assets: extension=war
-         filename: ./target/TrainBook-1.0.0-SNAPSHOT.war
+      - name: Test Nexus Authentication
+        env:
+          NEXUS_SERVER_URL: ${{ secrets.NEXUS_SERVER_URL }}
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        run: |
+          echo "Testing authentication to Nexus at $NEXUS_SERVER_URL"
+          RESPONSE_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -u "$NEXUS_USERNAME:$NEXUS_PASSWORD" \
+            --head \
+            "$NEXUS_SERVER_URL")
+
+          echo "HTTP response code: $RESPONSE_CODE"
+
+          if [[ "$RESPONSE_CODE" -eq 200 ]]; then
+            echo "Authentication successful."
+            exit 0
+          else
+            echo "Authentication failed."
+            exit 1
+          fi
 
 
