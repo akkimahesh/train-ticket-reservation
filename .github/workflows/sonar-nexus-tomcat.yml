@@ -40,6 +40,6 @@ jobs:
           password: ${{ secrets.NEXUS_PASSWORD }}
           format: raw
           repository: train-ticket
-          coordinates: groupId=com.example artifactId=app version=1.0.0
           assets: extension=war
           filename: ./target/TrainBook-1.0.0-SNAPSHOT.war
+
