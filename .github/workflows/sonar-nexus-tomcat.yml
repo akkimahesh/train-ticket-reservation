@@ -35,11 +35,12 @@ jobs:
       - name: Publish to Nexus
         uses: sonatype-nexus-community/nexus-repo-github-action@master
         with:
-          serverUrl: ${{ secrets.NEXUS_SERVER_URL }}
-          username: ${{ secrets.NEXUS_USERNAME }}
-          password: ${{ secrets.NEXUS_PASSWORD }}
-          format: raw
-          repository: train-ticket
-          assets: extension=war
-          filename: ./target/TrainBook-1.0.0-SNAPSHOT.war
+         serverUrl: ${{ secrets.NEXUS_SERVER_URL }}
+         username: ${{ secrets.NEXUS_USERNAME }}
+         password: ${{ secrets.NEXUS_PASSWORD }}
+         format: raw
+         repository: train-ticket
+         assets: extension=war
+         filename: ./target/TrainBook-1.0.0-SNAPSHOT.war
+
 
