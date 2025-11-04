@@ -66,13 +66,12 @@ jobs:
       - name: Download WAR from Nexus
         run: |
           echo "Downloading artifact from Nexus..."
-          curl -s -u "$NEXUS_USERNAME:$NEXUS_PASSWORD" -O "${NEXUS_REPO_PATH}"
+          wget "$NEXUS_DOWNLOAD"
 
       - name: Deploy to Tomcat
         run: |
-          echo "Deploying WAR to Tomcat..."
-          # Use Tomcat manager's text interface to deploy
-           "http://${{ secrets.TOMCAT_HOST }}/manager/text/deploy?path=/TrainBook-1.0.0-SNAPSHOT.war&update=true" \
-            --upload-file ./TrainBook-1.0.0-SNAPSHOT.war
+         curl -v -u ${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }} \
+         -T target/TrainBook-1.0.0-SNAPSHOT.war \
+         "http://${{ secrets.TOMCAT_HOST }}/manager/text/deploy?path=/TrainBook-1.0.0-SNAPSHOT.war&update=true"
 
 
