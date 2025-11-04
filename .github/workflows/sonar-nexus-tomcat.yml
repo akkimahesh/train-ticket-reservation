@@ -53,15 +53,14 @@ jobs:
             echo "Authentication failed."
             exit 1
           fi
-      - name: Publish to Nexus
-        uses: sonatype-nexus-community/nexus-repo-github-action@master
-        with:
-         serverUrl: ${{ secrets.NEXUS_SERVER_URL }}
-         username: ${{ secrets.NEXUS_USERNAME }}
-         password: ${{ secrets.NEXUS_PASSWORD }}
-         format: raw
-         repository: train-ticket
-         assets: extension=war
-         filename: ./target/TrainBook-1.0.0-SNAPSHOT.war
+      - name: Upload WAR to Nexus (Manual Method)
+        env:
+          NEXUS_SERVER_URL: ${{ secrets.NEXUS_SERVER_URL }}
+          NEXUS_USERNAME: ${{ secrets.NEXUS_USERNAME }}
+          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+        run: |
+         echo "Uploading WAR to Nexus..."
+         curl -v -u "$NEXUS_USERNAME:$NEXUS_PASSWORD" \
+         --upload-file ./target/TrainBook-1.0.0-SNAPSHOT.war "${NEXUS_SERVER_URL}"/repository/train-ticket/
 
 
